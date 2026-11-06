@@ -73,10 +73,19 @@ direct PDF download — the button is honestly labelled "Print / Save as PDF".
 - Test 4: negative rate, margin 100%, fee 100%, fractional rounds,
   milestones ≠ 100%, empty fields, huge rate — all show errors or pass — PASS
 - Test 5: quotation — checked live in the browser after deployment:
-  correct names, amounts, rounds, extra round price, milestones,
-  tax separate, private margin hidden, only the quotation prints — see live check
-- Test 6: desktop + mobile Chrome, light + dark theme, refresh,
-  currencies, copy, print, long names, special characters — checked live
+  correct names, amounts, rounds, extra round price ($138.89),
+  milestones ($833.33 / $500.00 / $333.33), tax separate, private
+  margin/rate/fee hidden from the client view, copy shows "Copied." — PASS.
+  Print: the print CSS hides everything except the quotation
+  (verified in the code), but the test browser could not open a print
+  preview, so please check Print / Save as PDF in a normal browser.
+- Test 6: desktop Chrome — PASS (live re-test 6 Nov 2026: defaults,
+  tax, errors, PKR, milestones, copy all passed). Mobile and print
+  preview could not be checked in the test browser (it cannot resize
+  to phone width or open print preview), so please check those on a
+  phone and in a normal desktop browser. Light + dark theme are
+  supported by the stylesheet; long names and special characters are
+  rendered with textContent only, never as HTML.
 
 ## Deploy (GitHub Pages)
 
