@@ -6,75 +6,132 @@
 <meta name="color-scheme" content="light dark"/>
 <link rel="icon" href="data:,"/>
 <title>Freelancer Pricing Calculator — Price Your Project</title>
-<meta name="description" content="Free freelancer pricing calculator for web designers and developers. Enter your hours, rate, expenses, profit margin and revision time, and get a clear project price with a printable quotation."/>
+<meta name="description" content="Free freelancer pricing calculator for web designers and developers. Enter hours by phase, expenses, profit margin, platform fee and tax, and get a clear project price with a printable client quotation. No sign-up, no upload."/>
 <link rel="canonical" href="https://datawithsaqib.github.io/freelancer-pricing-calculator/"/>
 <meta property="og:title" content="Freelancer Pricing Calculator"/>
-<meta property="og:description" content="Price a freelance project in minutes. Clear breakdown, platform fee handled correctly, and a printable quotation."/>
+<meta property="og:description" content="Price a freelance project in minutes. Correct revision, margin, fee and tax maths, and a printable quotation that hides your private costs."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://datawithsaqib.github.io/freelancer-pricing-calculator/"/>
 <link rel="stylesheet" href="assets/style.css"/>
 </head>
 <body>
-<header class="site-header">
+<header class="site-header no-print">
   <div class="wrap">
     <a class="logo" href="./">Price<span>My</span>Project</a>
     <nav class="main-nav" aria-label="Main navigation">
       <a href="./" aria-current="page">Calculator</a>
       <a href="about/">About</a>
+      <a href="contact/">Contact</a>
       <a href="privacy/">Privacy</a>
     </nav>
   </div>
 </header>
 <div class="wrap">
 <main>
-  <header class="hero">
+  <header class="hero no-print">
     <h1>Freelancer Pricing Calculator</h1>
     <p class="lede">Price a web design or development project in minutes. No sign-up, no upload — the maths happens on your device.</p>
   </header>
 
-  <section aria-label="Pricing calculator" style="margin-top:20px">
+  <div id="errorBox" class="error-box no-print" role="alert" hidden>
+    <strong>Please fix the problems below.</strong>
+    <p id="errorSummary" style="margin:6px 0 0"></p>
+  </div>
+
+  <section aria-label="Pricing calculator" class="no-print" style="margin-top:20px">
     <div class="card tool-card">
       <div class="grid2">
         <div>
-          <label class="field" for="project">Project name</label>
-          <input type="text" id="project" placeholder="Business website"/>
-          <label class="field" for="client">Client name</label>
-          <input type="text" id="client" placeholder="Client name"/>
-          <label class="field" for="hours">Estimated hours</label>
-          <input type="number" id="hours" min="0" step="0.5" value="20"/>
-          <label class="field" for="rate">Your hourly rate ($) <span>— what you want to earn per hour</span></label>
-          <input type="number" id="rate" min="0" step="1" value="50"/>
-          <label class="field" for="expenses">Extra project expenses ($) <span>— tools, images, hosting</span></label>
-          <input type="number" id="expenses" min="0" step="1" value="0"/>
+          <label class="field" for="currency">Currency <span>— formatting only, no exchange rates</span></label>
+          <select id="currency">
+            <option value="USD" selected>USD — US Dollar ($)</option>
+            <option value="PKR">PKR — Pakistani Rupee</option>
+            <option value="GBP">GBP — British Pound (£)</option>
+            <option value="EUR">EUR — Euro (€)</option>
+            <option value="CAD">CAD — Canadian Dollar</option>
+            <option value="AUD">AUD — Australian Dollar</option>
+          </select>
+          <label class="field" for="rate">Your hourly rate <span>— what you want to earn per hour, in the currency above</span></label>
+          <input type="number" id="rate" min="0" step="0.01" inputmode="decimal" value="50" aria-describedby="err-rate"/>
+          <span class="err" id="err-rate"></span>
         </div>
         <div>
-          <label class="field" for="margin">Profit margin (%)</label>
-          <input type="number" id="margin" min="0" step="1" value="20"/>
-          <label class="field" for="revHours">Revision time (hours) <span>— time set aside for changes</span></label>
-          <input type="number" id="revHours" min="0" step="0.5" value="2"/>
-          <label class="field" for="rounds">Revision rounds included</label>
-          <input type="number" id="rounds" min="0" step="1" value="2"/>
-          <label class="field" for="contingency">Contingency (%) <span>— for surprises, 0 if none</span></label>
-          <input type="number" id="contingency" min="0" step="1" value="0"/>
-          <label class="field" for="fee">Platform fee (%) <span>— e.g. Upwork / Fiverr fee, 0 if direct client</span></label>
-          <input type="number" id="fee" min="0" max="99" step="1" value="10"/>
+          <p class="small" style="margin-top:14px"><strong>How it works, in short:</strong> add up your hours and expenses, add a true profit margin, then add the platform fee on top so you still keep your price. Tax is added last, and is not profit.</p>
+          <p class="small">Currency only changes how the numbers look. It does not convert amounts.</p>
         </div>
       </div>
 
-      <h2 style="margin-top:26px">Your price</h2>
-      <p class="small" id="rRateNote"></p>
+      <h2 style="margin-top:26px">1. Hours by phase</h2>
+      <p class="small">Enter hours for each phase. Leave a phase at 0 if it does not apply.</p>
+      <div class="phase-grid">
+        <div><label class="field" for="phDiscovery">Discovery &amp; planning</label><input type="number" id="phDiscovery" min="0" step="0.5" inputmode="decimal" value="0"/><span class="err" id="err-phDiscovery"></span></div>
+        <div><label class="field" for="phDesign">Design</label><input type="number" id="phDesign" min="0" step="0.5" inputmode="decimal" value="0"/><span class="err" id="err-phDesign"></span></div>
+        <div><label class="field" for="phDev">Development</label><input type="number" id="phDev" min="0" step="0.5" inputmode="decimal" value="20"/><span class="err" id="err-phDev"></span></div>
+        <div><label class="field" for="phContent">Content &amp; CMS</label><input type="number" id="phContent" min="0" step="0.5" inputmode="decimal" value="0"/><span class="err" id="err-phContent"></span></div>
+        <div><label class="field" for="phTesting">Testing &amp; QA</label><input type="number" id="phTesting" min="0" step="0.5" inputmode="decimal" value="0"/><span class="err" id="err-phTesting"></span></div>
+        <div><label class="field" for="phLaunch">Launch &amp; handover</label><input type="number" id="phLaunch" min="0" step="0.5" inputmode="decimal" value="0"/><span class="err" id="err-phLaunch"></span></div>
+      </div>
+      <p class="small"><strong id="rTotalHours">20 hours</strong></p>
+      <p class="small" id="rPhaseNote"></p>
+
+      <h2 style="margin-top:26px">2. Revisions</h2>
+      <div class="grid2">
+        <div><label class="field" for="rounds">Revision rounds included <span>— whole number only</span></label><input type="number" id="rounds" min="0" step="1" inputmode="numeric" value="2"/><span class="err" id="err-rounds"></span></div>
+        <div><label class="field" for="revHours">Hours per revision round</label><input type="number" id="revHours" min="0" step="0.5" inputmode="decimal" value="2"/><span class="err" id="err-revHours"></span></div>
+      </div>
+      <p class="small">Revision cost = rounds × hours per round × hourly rate. Example: 2 rounds × 2 hours × $50 = $200.</p>
+
+      <h2 style="margin-top:26px">3. Project expenses</h2>
+      <div class="phase-grid">
+        <div><label class="field" for="exHosting">Hosting</label><input type="number" id="exHosting" min="0" step="0.01" inputmode="decimal" value="0"/><span class="err" id="err-exHosting"></span></div>
+        <div><label class="field" for="exDomain">Domain</label><input type="number" id="exDomain" min="0" step="0.01" inputmode="decimal" value="0"/><span class="err" id="err-exDomain"></span></div>
+        <div><label class="field" for="exSoftware">Software licences</label><input type="number" id="exSoftware" min="0" step="0.01" inputmode="decimal" value="0"/><span class="err" id="err-exSoftware"></span></div>
+        <div><label class="field" for="exStock">Stock assets</label><input type="number" id="exStock" min="0" step="0.01" inputmode="decimal" value="0"/><span class="err" id="err-exStock"></span></div>
+        <div><label class="field" for="exSubcontractor">Subcontractors</label><input type="number" id="exSubcontractor" min="0" step="0.01" inputmode="decimal" value="0"/><span class="err" id="err-exSubcontractor"></span></div>
+        <div><label class="field" for="exOther">Other expenses</label><input type="number" id="exOther" min="0" step="0.01" inputmode="decimal" value="0"/><span class="err" id="err-exOther"></span></div>
+      </div>
+      <p class="small">Total expenses: <strong id="rExpensesTotal">$0.00</strong></p>
+
+      <h2 style="margin-top:26px">4. Margin, fee, tax and contingency</h2>
+      <div class="grid2">
+        <div>
+          <label class="field" for="margin">Profit margin (%) <span>— % of the selling price, not a markup</span></label><input type="number" id="margin" min="0" max="99.99" step="0.01" inputmode="decimal" value="20"/><span class="err" id="err-margin"></span>
+          <label class="field" for="fee">Platform fee (%) <span>— e.g. Upwork / Fiverr, 0 for a direct client</span></label><input type="number" id="fee" min="0" max="99.99" step="0.01" inputmode="decimal" value="10"/><span class="err" id="err-fee"></span>
+        </div>
+        <div>
+          <label class="field" for="tax">Tax / VAT / GST (%) <span>— 0 if none. You must choose the correct rate for your country.</span></label><input type="number" id="tax" min="0" max="100" step="0.01" inputmode="decimal" value="0"/><span class="err" id="err-tax"></span>
+          <label class="field" for="contingency">Contingency (%) <span>— for surprises, 0 if none</span></label><input type="number" id="contingency" min="0" max="100" step="0.01" inputmode="decimal" value="0"/><span class="err" id="err-contingency"></span>
+        </div>
+      </div>
+      <p class="small">Platform fee applies to the <strong>pre-tax</strong> price. No fee is charged on tax, and tax collected is not profit — it is money you pass on to the tax office.</p>
+
+      <h2 style="margin-top:26px">Your price — private view</h2>
+      <p class="small">Only you see this. Your hourly rate, profit and fee are <strong>not</strong> shown in the client quotation below.</p>
       <ul class="breakdown">
-        <li><span>Work — hours × rate</span><b id="rLabour">$0.00</b></li>
-        <li><span>Revision time</span><b id="rRevision">$0.00</b></li>
-        <li><span>Extra expenses</span><b id="rExpenses">$0.00</b></li>
+        <li><span>Work — total hours × rate</span><b id="rLabour">$0.00</b></li>
+        <li><span>Revision cost — rounds × hours per round × rate</span><b id="rRevision">$0.00</b></li>
+        <li><span>Project expenses</span><b id="rExpenses">$0.00</b></li>
         <li><span>Contingency</span><b id="rCont">$0.00</b></li>
-        <li><span>Profit margin</span><b id="rProfit">$0.00</b></li>
+        <li><span>Total costs</span><b id="rCost">$0.00</b></li>
+        <li><span>Profit (true margin)</span><b id="rProfit">$0.00</b></li>
         <li><span>Price before platform fee</span><b id="rBeforeFee">$0.00</b></li>
-        <li><span>Platform fee — added on top, so you still keep your price</span><b id="rFee">$0.00</b></li>
-        <li class="total"><span>Final recommended price</span><b id="rFinal">$0.00</b></li>
-        <li><span>You keep after the fee</span><b id="rKeep">$0.00</b></li>
-        <li><span>Deposit to start (50%)</span><b id="rDeposit">$0.00</b></li>
+        <li><span>Platform fee</span><b id="rFee">$0.00</b></li>
+        <li><span>Price before tax</span><b id="rPreTax">$0.00</b></li>
+        <li><span>Tax</span><b id="rTax">$0.00</b></li>
+        <li class="total"><span>Total customer payment</span><b id="rTotal">$0.00</b></li>
+        <li><span>You keep after the fee (before tax)</span><b id="rKeep">$0.00</b></li>
+        <li><span>Actual profit margin on what you keep</span><b id="rActualMargin">—</b></li>
+        <li><span>Extra revision round — client price, before tax</span><b id="rExtraRound">$0.00</b></li>
       </ul>
+
+      <h3 style="margin-top:22px">Milestone payments</h3>
+      <p class="small">Milestones are % of the total customer payment (including tax). They must add up to exactly 100%.</p>
+      <div class="phase-grid">
+        <div><label class="field" for="ms1">Payment 1 (%)</label><input type="number" id="ms1" min="0" max="100" step="0.01" inputmode="decimal" value="50"/><span class="err" id="err-ms1"></span><p class="small"><strong id="rMsAmt1">$0.00</strong></p></div>
+        <div><label class="field" for="ms2">Payment 2 (%)</label><input type="number" id="ms2" min="0" max="100" step="0.01" inputmode="decimal" value="30"/><span class="err" id="err-ms2"></span><p class="small"><strong id="rMsAmt2">$0.00</strong></p></div>
+        <div><label class="field" for="ms3">Payment 3 (%)</label><input type="number" id="ms3" min="0" max="100" step="0.01" inputmode="decimal" value="20"/><span class="err" id="err-ms3"></span><p class="small"><strong id="rMsAmt3">$0.00</strong></p></div>
+      </div>
+      <p class="small">Milestones total: <strong id="rMsSum">100%</strong></p>
 
       <div class="btnrow">
         <button class="btn primary" id="btnPrint" type="button">Print / Save as PDF</button>
@@ -83,28 +140,81 @@
         <button class="btn" id="btnClear" type="button">Clear</button>
         <span class="small" id="copyMsg" role="status"></span>
       </div>
-
-      <h3 style="margin-top:22px">Quotation to send to your client</h3>
-      <div class="quote" id="quoteText"></div>
-
       <div class="privacy-note">
         <span aria-hidden="true">🔒</span>
-        <span><strong>Private by design:</strong> all maths happens on your device, in this page. Nothing is uploaded or saved.</span>
+        <span><strong>Private by design:</strong> all maths happens on your device, in this page. Nothing is uploaded, saved, or sent to a server.</span>
       </div>
     </div>
   </section>
 
-  <section class="info-card" aria-label="How it works">
+  <section aria-label="Quotation details" class="no-print" style="margin-top:44px">
+    <div class="card">
+      <h2>Quotation details — edit before printing</h2>
+      <p class="small">This is what your client sees. Your rate, costs, profit and fee are not included here.</p>
+      <div class="grid2">
+        <div>
+          <label class="field" for="freelancer">Your name / business name</label><input type="text" id="freelancer" placeholder="Your name"/>
+          <label class="field" for="client">Client name</label><input type="text" id="client" placeholder="Client name"/>
+          <label class="field" for="project">Project name</label><input type="text" id="project" placeholder="Business website"/>
+          <label class="field" for="quoteDate">Quotation date</label><input type="date" id="quoteDate"/>
+          <label class="field" for="validDays">Valid for (days)</label><input type="number" id="validDays" min="1" max="365" step="1" value="14"/><span class="err" id="err-validDays"></span>
+        </div>
+        <div>
+          <label class="field" for="scope">Project scope</label><textarea class="short" id="scope" placeholder="What the project includes, in plain words."></textarea>
+          <label class="field" for="deliverables">Deliverables <span>— one per line</span></label><textarea class="short" id="deliverables" placeholder="5-page website&#10;Mobile-friendly design&#10;Contact form"></textarea>
+        </div>
+      </div>
+      <label class="field" for="exclusions">Exclusions <span>— what is not included</span></label><textarea class="short" id="exclusions" placeholder="Logo design, written content, hosting and domain fees, unless listed above."></textarea>
+      <label class="field" for="terms">Payment terms</label><textarea class="short" id="terms">50% to start, 30% on design approval, 20% on launch. Bank transfer.</textarea>
+    </div>
+  </section>
+
+  <section id="quoteSection" aria-label="Client quotation">
+    <div class="quote-sheet">
+      <p class="q-kicker">Quotation</p>
+      <h2 id="qProject">Project</h2>
+      <p><strong>From:</strong> <span id="qFreelancer">Freelancer</span><br/>
+      <strong>To:</strong> <span id="qClient">Client</span><br/>
+      <strong>Date:</strong> <span id="qDate">—</span> &nbsp; <strong>Valid until:</strong> <span id="qValidUntil">—</span></p>
+      <h3>Scope</h3>
+      <p id="qScope">As discussed with the client.</p>
+      <h3>Deliverables</h3>
+      <ul id="qDeliverables" class="plain"></ul>
+      <h3>Price</h3>
+      <table class="q-table">
+        <tr><th>Price before tax</th><td id="qPreTax">$0.00</td></tr>
+        <tr><th><span id="qTaxRate">Tax (0%)</span></th><td id="qTax">$0.00</td></tr>
+        <tr class="q-total"><th>Total to pay</th><td id="qTotal">$0.00</td></tr>
+      </table>
+      <h3>Milestone payments</h3>
+      <ul id="qMilestones" class="plain"></ul>
+      <h3>Revisions</h3>
+      <p>Included: <span id="qRounds">2 revision rounds (2 hours each)</span><br/>Extra revision round: <span id="qExtraRound">$0.00</span> before tax.</p>
+      <h3>Exclusions</h3>
+      <p id="qExclusions">None listed.</p>
+      <h3>Payment terms</h3>
+      <p id="qTerms"></p>
+      <h3>Client acceptance</h3>
+      <div class="sig-grid">
+        <div><p class="sig-line"></p><p>Client signature &amp; date</p></div>
+        <div><p class="sig-line"></p><p>Freelancer signature &amp; date</p></div>
+      </div>
+      <p class="small" id="qNote"></p>
+      <p class="small">Made with PriceMyProject — free freelancer pricing calculator.</p>
+    </div>
+  </section>
+
+  <section class="info-card no-print" aria-label="How it works">
     <h2>How the price is worked out</h2>
-    <p><strong>1. Work:</strong> hours × your hourly rate. <strong>2. Revisions:</strong> revision hours × your rate, so changes are paid for. <strong>3. Expenses and contingency:</strong> added on top. <strong>4. Profit:</strong> a true margin — it is a % of the final price, not just added on top. Example: cost $2,420 with 20% margin = $3,025 price, profit $605. <strong>5. Platform fee:</strong> this is the important part — the fee is <em>added on top</em>, not taken off. Example: to keep $1,000 after a 10% fee, you must quote $1,111.11, because the platform then takes $111.11 and you keep $1,000.</p>
-    <p><strong>PDF:</strong> press “Print / Save as PDF”, then choose “Save as PDF” in your browser. No extra file or internet tool is needed, so it works every time.</p>
+    <p><strong>1. Work:</strong> total hours × your hourly rate. <strong>2. Revisions:</strong> rounds × hours per round × rate. Example: 2 rounds × 2 hours × $50 = $200. <strong>3. Expenses and contingency:</strong> added on top. <strong>4. Profit margin vs markup:</strong> margin is a % of the selling price. Costs $1,000 with 20% margin = $1,250 price, $250 profit. A 20% markup would give $1,200, only $200 profit — 16.7% of the price, not 20%. <strong>5. Platform fee:</strong> the fee is added on top of the pre-tax price, so you keep your price after the fee. Example: costs $1,200, margin 20%, fee 10% = $1,666.67 price, $166.67 fee, you keep $1,500, profit $300. <strong>6. Tax:</strong> added last, on the price after the fee. Tax is not profit.</p>
+    <p><strong>PDF:</strong> press “Print / Save as PDF”, then choose “Save as PDF” in your browser. Only the client quotation above prints — not the calculator, not your private costs. No extra file or internet tool is needed.</p>
     <h3>What is in the quotation?</h3>
-    <p>Your total price, the full breakdown, the deposit to start (50%), how many revision rounds are included, what is not included, and that the quote is valid for 14 days. Print it, or choose “Save as PDF” in your browser, and send it to your client.</p>
+    <p>Your total price, tax shown separately, milestone payments, how many revision rounds are included, the price of an extra round, exclusions, payment terms, and a signature area. Your hourly rate, costs, profit margin and platform fee are never shown to the client.</p>
     <h3>Is it free?</h3>
-    <p>Yes. Free to use, no account, no sign-up.</p>
+    <p>Yes. Free to use, no account, no sign-up, no upload.</p>
   </section>
 </main>
-<footer class="site-footer">
+<footer class="site-footer no-print">
   <nav aria-label="Footer">
     <a href="about/">About</a>
     <a href="contact/">Contact</a>

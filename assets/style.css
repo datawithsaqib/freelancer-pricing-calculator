@@ -127,3 +127,42 @@ input[type=number]:focus,input[type=text]:focus{outline:none;border-color:var(--
 .breakdown li.total b{color:var(--accent)}
 .quote{white-space:pre-wrap;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14.5px;line-height:1.6;margin-top:12px}
 @media print{ .site-header,.btnrow,.privacy-note{display:none !important} body{background:#fff} .card{box-shadow:none} }
+
+/* --- Fixed calculator: validation, phases, quotation --- */
+select{width:100%;border:2px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);padding:12px 14px;font-size:16px;font-family:inherit}
+select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+input[type=date]{width:100%;border:2px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);padding:12px 14px;font-size:16px;font-family:inherit}
+input[type=date]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+textarea.short{min-height:84px}
+.err{display:block;color:#b91c1c;font-size:13.5px;font-weight:600;margin-top:4px;min-height:1em}
+input.invalid,select.invalid,textarea.invalid{border-color:#b91c1c !important;box-shadow:0 0 0 4px rgba(185,28,28,.12)}
+.error-box{background:#fef2f2;border:1.5px solid #b91c1c;border-radius:12px;color:#7f1d1d;padding:14px 16px;margin-top:20px}
+.phase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0 16px}
+@media(max-width:760px){.phase-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.phase-grid{grid-template-columns:1fr}}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+/* Client quotation sheet — screen view */
+.quote-sheet{background:#fff;color:#14201c;border:1px solid var(--line);border-radius:16px;padding:28px;margin-top:44px}
+.quote-sheet h2{font-size:28px}
+.quote-sheet h3{margin-top:22px}
+.q-kicker{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.q-table{width:100%;border-collapse:collapse;margin-top:8px}
+.q-table th,.q-table td{border-bottom:1px solid var(--line);padding:9px 2px;text-align:left;font-size:15.5px}
+.q-table td{text-align:right;white-space:nowrap}
+.q-table tr.q-total th,.q-table tr.q-total td{font-size:19px;font-weight:800;border-bottom:none}
+.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:28px}
+.sig-line{border-bottom:1.5px solid #14201c;height:44px;margin:0}
+/* Print: only the client quotation, clean A4 */
+@media print{
+  @page{size:A4;margin:15mm}
+  body{background:#fff !important;color:#000;font-size:12pt}
+  .no-print{display:none !important}
+  .wrap{max-width:none;padding:0;margin:0}
+  #quoteSection{display:block !important;margin:0}
+  .quote-sheet{border:none;border-radius:0;padding:0;margin:0;box-shadow:none;color:#000}
+  .quote-sheet h2{font-size:22pt}
+  .quote-sheet h3{font-size:13pt;margin-top:16pt;page-break-after:avoid}
+  .quote-sheet p,.quote-sheet li,.q-table th,.q-table td{font-size:11pt}
+  .sig-grid{page-break-inside:avoid}
+  .q-table tr.q-total th,.q-table tr.q-total td{font-size:14pt}
+}
