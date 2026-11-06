@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="color-scheme" content="light dark"/>
+<link rel="icon" href="data:,"/>
+<title>Freelancer Pricing Calculator — Price Your Project</title>
+<meta name="description" content="Free freelancer pricing calculator for web designers and developers. Enter your hours, rate, expenses, profit margin and revision time, and get a clear project price with a printable quotation."/>
+<link rel="canonical" href="https://datawithsaqib.github.io/freelancer-pricing-calculator/"/>
+<meta property="og:title" content="Freelancer Pricing Calculator"/>
+<meta property="og:description" content="Price a freelance project in minutes. Clear breakdown, platform fee handled correctly, and a printable quotation."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://datawithsaqib.github.io/freelancer-pricing-calculator/"/>
+<link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="./">Price<span>My</span>Project</a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="./" aria-current="page">Calculator</a>
+      <a href="about/">About</a>
+      <a href="privacy/">Privacy</a>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+<main>
+  <header class="hero">
+    <h1>Freelancer Pricing Calculator</h1>
+    <p class="lede">Price a web design or development project in minutes. No sign-up, no upload — the maths happens on your device.</p>
+  </header>
+
+  <section aria-label="Pricing calculator" style="margin-top:20px">
+    <div class="card tool-card">
+      <div class="grid2">
+        <div>
+          <label class="field" for="project">Project name</label>
+          <input type="text" id="project" placeholder="Business website"/>
+          <label class="field" for="client">Client name</label>
+          <input type="text" id="client" placeholder="Client name"/>
+          <label class="field" for="hours">Estimated hours</label>
+          <input type="number" id="hours" min="0" step="0.5" value="20"/>
+          <label class="field" for="rate">Your hourly rate ($) <span>— what you want to earn per hour</span></label>
+          <input type="number" id="rate" min="0" step="1" value="50"/>
+          <label class="field" for="expenses">Extra project expenses ($) <span>— tools, images, hosting</span></label>
+          <input type="number" id="expenses" min="0" step="1" value="0"/>
+        </div>
+        <div>
+          <label class="field" for="margin">Profit margin (%)</label>
+          <input type="number" id="margin" min="0" step="1" value="20"/>
+          <label class="field" for="revHours">Revision time (hours) <span>— time set aside for changes</span></label>
+          <input type="number" id="revHours" min="0" step="0.5" value="2"/>
+          <label class="field" for="rounds">Revision rounds included</label>
+          <input type="number" id="rounds" min="0" step="1" value="2"/>
+          <label class="field" for="contingency">Contingency (%) <span>— for surprises, 0 if none</span></label>
+          <input type="number" id="contingency" min="0" step="1" value="0"/>
+          <label class="field" for="fee">Platform fee (%) <span>— e.g. Upwork / Fiverr fee, 0 if direct client</span></label>
+          <input type="number" id="fee" min="0" max="99" step="1" value="10"/>
+        </div>
+      </div>
+
+      <h2 style="margin-top:26px">Your price</h2>
+      <p class="small" id="rRateNote"></p>
+      <ul class="breakdown">
+        <li><span>Work — hours × rate</span><b id="rLabour">$0.00</b></li>
+        <li><span>Revision time</span><b id="rRevision">$0.00</b></li>
+        <li><span>Extra expenses</span><b id="rExpenses">$0.00</b></li>
+        <li><span>Contingency</span><b id="rCont">$0.00</b></li>
+        <li><span>Profit margin</span><b id="rProfit">$0.00</b></li>
+        <li><span>Price before platform fee</span><b id="rBeforeFee">$0.00</b></li>
+        <li><span>Platform fee — added on top, so you still keep your price</span><b id="rFee">$0.00</b></li>
+        <li class="total"><span>Final recommended price</span><b id="rFinal">$0.00</b></li>
+        <li><span>You keep after the fee</span><b id="rKeep">$0.00</b></li>
+        <li><span>Deposit to start (50%)</span><b id="rDeposit">$0.00</b></li>
+      </ul>
+
+      <div class="btnrow">
+        <button class="btn primary" id="btnPrint" type="button">Print / Save as PDF</button>
+        <button class="btn" id="btnCopy" type="button">Copy quotation</button>
+        <button class="btn" id="btnSample" type="button">Load sample</button>
+        <button class="btn" id="btnClear" type="button">Clear</button>
+        <span class="small" id="copyMsg" role="status"></span>
+      </div>
+
+      <h3 style="margin-top:22px">Quotation to send to your client</h3>
+      <div class="quote" id="quoteText"></div>
+
+      <div class="privacy-note">
+        <span aria-hidden="true">🔒</span>
+        <span><strong>Private by design:</strong> all maths happens on your device, in this page. Nothing is uploaded or saved.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="info-card" aria-label="How it works">
+    <h2>How the price is worked out</h2>
+    <p><strong>1. Work:</strong> hours × your hourly rate. <strong>2. Revisions:</strong> revision hours × your rate, so changes are paid for. <strong>3. Expenses and contingency:</strong> added on top. <strong>4. Profit:</strong> a true margin — it is a % of the final price, not just added on top. Example: cost $2,420 with 20% margin = $3,025 price, profit $605. <strong>5. Platform fee:</strong> this is the important part — the fee is <em>added on top</em>, not taken off. Example: to keep $1,000 after a 10% fee, you must quote $1,111.11, because the platform then takes $111.11 and you keep $1,000.</p>
+    <p><strong>PDF:</strong> press “Print / Save as PDF”, then choose “Save as PDF” in your browser. No extra file or internet tool is needed, so it works every time.</p>
+    <h3>What is in the quotation?</h3>
+    <p>Your total price, the full breakdown, the deposit to start (50%), how many revision rounds are included, what is not included, and that the quote is valid for 14 days. Print it, or choose “Save as PDF” in your browser, and send it to your client.</p>
+    <h3>Is it free?</h3>
+    <p>Yes. Free to use, no account, no sign-up.</p>
+  </section>
+</main>
+<footer class="site-footer">
+  <nav aria-label="Footer">
+    <a href="about/">About</a>
+    <a href="contact/">Contact</a>
+    <a href="privacy/">Privacy Policy</a>
+    <a href="terms/">Terms of Use</a>
+  </nav>
+  <p class="small">PriceMyProject — free freelancer pricing calculator that runs in your browser.</p>
+</footer>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

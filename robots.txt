@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://datawithsaqib.github.io/freelancer-pricing-calculator/sitemap.xml
