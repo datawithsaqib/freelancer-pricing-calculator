@@ -87,5 +87,5 @@ direct PDF download — the button is honestly labelled "Print / Save as PDF".
 
 ## Contact
 
-No email address is published. Report a mistake at
-https://github.com/datawithsaqib/freelancer-pricing-calculator/issues
+Email: datawithsaqib@gmail.com — Phone: 03029097192.
+Report a mistake at https://github.com/datawithsaqib/freelancer-pricing-calculator/issues
